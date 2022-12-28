@@ -1,0 +1,22 @@
+.info{
+    background-color: #a9d6e5;
+    width: 50%;
+    font-family: 'Roboto Mono', monospace;
+    border-radius: 0.5em;
+    margin-left: 25%;
+    padding:1.5em;
+    font-size: 1.25em;
+}
+.connect{ 
+    margin-left: 85%;
+    margin-top: 2%;
+    margin-bottom: 3%;
+}
+body{
+    background-color: #feeafa;
+}
+.enter{
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5%;
+}

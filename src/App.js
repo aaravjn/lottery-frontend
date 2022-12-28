@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import Home from './pages/Home';  
+import Login from "./components/Login"
+import About from "./pages/About"
+import { Routes, Route} from "react-router-dom";
+import React from "react"
+import useToken from './useToken';
 
 function App() {
+  const { getToken, saveToken } = useToken()
+  const [token, userCredentials] = getToken()
+
+  const user = JSON.parse(userCredentials)
+  
+  if(!token) {
+    return <Login setToken={saveToken} />
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+    <Routes>
+      <Route path="/" element={<Home username={user["username"]} address={user["address"]} email={user["email"]} />} />
+      <Route path="/About" element={<About username={user["username"]}/>} />
+    </Routes>
     </div>
   );
 }
