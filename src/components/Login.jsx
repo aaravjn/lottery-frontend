@@ -29,7 +29,7 @@ function Login({ setToken }) {
             password,
             address
         }
-        const token = await loginUser(user)
+        const token = 'test-1234'/*await loginUser(user)*/
         setToken(token, user)
     }
 
