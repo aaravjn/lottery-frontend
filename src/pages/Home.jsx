@@ -59,7 +59,7 @@ function Home({username, address}) {
       await ListenforTxMined(transactionResponse, provider)
     }
     else {
-      console.log("The metamask account you are using is not valid, please switch your account")
+      alert("The metamask account you entered is not valid, please switch your account")
     }
   }
   return (
