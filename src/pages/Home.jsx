@@ -4,13 +4,15 @@ import { contractAddress, abi} from "../contract_provider"
 import Navbar from '../components/Navbar'
 import "../css/home.css"
 
-const provider = new ethers.providers.Web3Provider(window.ethereum)
-const signer = provider.getSigner()
-const lottery = new ethers.Contract(contractAddress, abi, signer)
+
 
 
 function Home({username, address}) {
 
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+  const signer = provider.getSigner()
+  const lottery = new ethers.Contract(contractAddress, abi, signer)
+  
   const [buttonText, setButtonText] = useState("Connect")
   const [entranceFee, setEntranceFee] = useState("0")
   const [numberOfPlayers, setNumberOfPlayers] = useState("0")
