@@ -7,13 +7,17 @@ import "../css/home.css"
 
 
 
-function Home({username, address}) {
+function Home({username}) {
+  let provider;
+  let signer;
+  let lottery;
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum)
-  const signer = provider.getSigner()
-  const lottery = new ethers.Contract(contractAddress, abi, signer)
-  
-  const [buttonText, setButtonText] = useState("Connect")
+  if(window.ethereum) {
+    provider = new ethers.providers.Web3Provider(window.ethereum)
+    signer = provider.getSigner()
+    lottery = new ethers.Contract(contractAddress, abi, signer)
+  }
+  const [buttonText, setButtonText] = useState("Connect Metamask")
   const [entranceFee, setEntranceFee] = useState("0")
   const [numberOfPlayers, setNumberOfPlayers] = useState("0")
   const [recentWinner, setRecentWinner] = useState("0")
@@ -55,13 +59,13 @@ function Home({username, address}) {
   }
 
   async function enterLottery() {
-    if((await signer.getAddress()) === address){
+    if(window.ethereum){
       const LotteryEntranceFee = await lottery.i_entranceFee();
       let transactionResponse = await lottery.enter_lottery({value: LotteryEntranceFee})
       await ListenforTxMined(transactionResponse, provider)
     }
     else {
-      alert("The metamask account you entered is not valid, please switch your account")
+      alert("No metamask wallet detected")
     }
   }
   return (

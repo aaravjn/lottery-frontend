@@ -18,7 +18,7 @@ function App() {
   return (
     <div className="app">
     <Routes>
-      <Route path="/" element={<Home username={user["username"]} address={user["address"]} email={user["email"]} />} />
+      <Route path="/" element={<Home username={user["username"]} email={user["email"]} />} />
       <Route path="/About" element={<About username={user["username"]}/>} />
     </Routes>
     </div>
