@@ -4,8 +4,8 @@ This is a decentralized lottery system which takes an entry fee from the user. I
 
 It's smart contract is deployed on Ethereum's Goerli TestNet.
 
-
-run `npm start` in your project directory to start the project.
+Run `npm install` to install all the project dependencies. <br>
+Run `npm start` in your project directory to start the project.
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
