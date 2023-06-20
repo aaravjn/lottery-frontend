@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { ethers } from "ethers"
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 
 const navigation = {
     about: "/About"
@@ -15,13 +16,12 @@ function Navbar({username}) {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        width:"6em"
+        width:"12em"
     }
     const buttonTextVariant = {
         backgroundColor:"black",
         color:"white",
-        width:"6em",
-        borderRadius: "0.6em"
+        width:"6em"
     }
 
     const [buttonText, setButtonText] = useState("Connect")
@@ -75,7 +75,19 @@ function Navbar({username}) {
                     style={ buttonState ? buttonTextVariant : addressTextVariant }
                     onClick={connectOrDisconnect}
                 >
-                    
+                    <span 
+                        className='rounded-circle'
+                        style={{
+                            display: buttonState ? "none" : "inline",
+                            marginRight:"7px",
+                            width:"22px",
+                            height:"22px",
+                            position:"relative",
+                            top:"4px"
+                        }}
+                    >
+                        <Jazzicon diameter={20} seed={jsNumberForAddress(buttonText)} />
+                    </span>
                     {buttonText}
                 </motion.button>
             </div>
