@@ -8,33 +8,13 @@ import "../css/home.css"
 
 
 function Home({username}) {
-  let provider;
-  let signer;
-  let lottery;
 
-  if(window.ethereum) {
-    provider = new ethers.providers.Web3Provider(window.ethereum)
-    signer = provider.getSigner()
-    lottery = new ethers.Contract(contractAddress, abi, signer)
-  }
-  const [buttonText, setButtonText] = useState("Connect Metamask")
   const [entranceFee, setEntranceFee] = useState("0")
   const [numberOfPlayers, setNumberOfPlayers] = useState("0")
   const [recentWinner, setRecentWinner] = useState("0")
+  const [provider, setProvider] = useState("null")
+  const [lottery, setLottery] = useState("null")
   
-  async function updateUIValues() {
-
-    const entranceFeeFromCall = (await lottery.i_entranceFee()).toString()
-    const numPlayersFromCall = (await lottery.getNumberOfParticipants()).toString()
-    const recentWinnerFromCall = (await lottery.s_winner()).toString()
-    setEntranceFee(entranceFeeFromCall)
-    setNumberOfPlayers(numPlayersFromCall)
-    setRecentWinner(recentWinnerFromCall)
-
-  } 
-  useEffect(() => {
-    updateUIValues()
-  })
 
   function ListenforTxMined(transactionResponse, provider, email){
     console.log(`Mining ${transactionResponse.hash}`)
@@ -48,21 +28,35 @@ function Home({username}) {
     })
   }
 
-  async function connect() {
-    if(window.ethereum){
-      window.ethereum.request({method:'eth_requestAccounts'})
-      setButtonText("Metamask Connected")
-    }
-    else{
-      alert("Please install the metamask extension")
+  
+
+  async function updateUIValues() {
+    if(lottery !== "null") {
+      const entranceFeeFromCall = (await lottery.i_entranceFee()).toString()
+      const numPlayersFromCall = (await lottery.getNumberOfParticipants()).toString()
+      const recentWinnerFromCall = (await lottery.s_winner()).toString()
+      setEntranceFee(entranceFeeFromCall)
+      setNumberOfPlayers(numPlayersFromCall)
+      setRecentWinner(recentWinnerFromCall)
     }
   }
+  useEffect(() => {
+    updateUIValues()
+  })
 
   async function enterLottery() {
-    if(window.ethereum){
+    if(window.ethereum && lottery !== "null"){
       const LotteryEntranceFee = await lottery.i_entranceFee();
       let transactionResponse = await lottery.enter_lottery({value: LotteryEntranceFee})
       await ListenforTxMined(transactionResponse, provider)
+    }
+    else if(window.ethereum && lottery === "null") {
+      const temp_provider = new ethers.providers.Web3Provider(window.ethereum)
+      const temp_signer = temp_provider.getSigner()
+      const temp_lottery = new ethers.Contract(contractAddress, abi, temp_signer)
+
+      setProvider(temp_provider)
+      setLottery(temp_lottery)
     }
     else {
       alert("No metamask wallet detected")
@@ -72,7 +66,7 @@ function Home({username}) {
     <>
     <Navbar username={username}/>
     <div className="home-wrapper">
-        <button className="connect btn btn-primary d-block" onClick={connect}>{buttonText}</button>
+        
       
       <div className='info'>
         <div>Entrance Fee: {ethers.utils.formatUnits(entranceFee, "ether")} ETH</div>

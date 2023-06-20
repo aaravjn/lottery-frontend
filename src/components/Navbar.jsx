@@ -1,12 +1,53 @@
 import '../css/Navbar.css'
-import React from "react"
+import React, { useState } from "react"
+import { ethers } from "ethers"
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 const navigation = {
     about: "/About"
 }
+function Navbar({username}) {
 
-function Navbar({username}){
+    const addressTextVariant = {
+        backgroundColor:"white",
+        color:"black",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        width:"6em"
+    }
+    const buttonTextVariant = {
+        backgroundColor:"black",
+        color:"white",
+        width:"6em",
+        borderRadius: "0.6em"
+    }
+
+    const [buttonText, setButtonText] = useState("Connect")
+    const [buttonState, setButtonState] = useState(1)
+
+    async function connectOrDisconnect() {
+        if(buttonState) {
+            if(window.ethereum) {
+
+                await window.ethereum.request({method:'eth_requestAccounts'})
+                const temp_provider = new ethers.providers.Web3Provider(window.ethereum)
+                const temp_signer = temp_provider.getSigner()
+                const temp_address = await temp_signer.getAddress()
+            
+                setButtonText(temp_address)
+                setButtonState(0)
+            }
+            else {
+                alert("Please install the metamask extension")
+            }
+        }
+        else {
+            setButtonState(1)
+            setButtonText("Connect")
+        }
+    }
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
@@ -25,7 +66,18 @@ function Navbar({username}){
                         </li>
                     </ul>
                 </div>
-                <span className='username'>Hey, {username} </span>
+                <motion.button
+                    className='btn'
+                    whileHover={{
+                        boxShadow: "-1px 1px 5px -1px black",
+                        y: -3
+                    }}
+                    style={ buttonState ? buttonTextVariant : addressTextVariant }
+                    onClick={connectOrDisconnect}
+                >
+                    
+                    {buttonText}
+                </motion.button>
             </div>
         </nav>
     )
