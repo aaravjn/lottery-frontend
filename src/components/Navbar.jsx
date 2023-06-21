@@ -4,6 +4,8 @@ import { ethers } from "ethers"
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const navigation = {
     about: "/About"
@@ -11,17 +13,17 @@ const navigation = {
 function Navbar({username}) {
 
     const addressTextVariant = {
-        backgroundColor:"white",
         color:"black",
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        width:"12em"
+        width:"12em",
+        backgroundColor:"rgb(176, 191, 191, 0.8)",
     }
     const buttonTextVariant = {
-        backgroundColor:"black",
+        backgroundColor:"rgba(0, 0, 0, 0.8)",
         color:"white",
-        width:"6em"
+        width:"10em"
     }
 
     const [buttonText, setButtonText] = useState("Connect")
@@ -40,7 +42,16 @@ function Navbar({username}) {
                 setButtonState(0)
             }
             else {
-                alert("Please install the metamask extension")
+                toast.info("Please install the metamask extension", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                })
             }
         }
         else {
@@ -51,7 +62,7 @@ function Navbar({username}) {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <span className="navbar-brand" href="/">DeLott</span>
+                <span className="navbar-brand" href="/">DELOTT</span>
                 
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -59,10 +70,10 @@ function Navbar({username}) {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="/">Home</a>
+                            <a className="nav-link active" aria-current="page" href="/">HOME</a>
                         </li>
                         <li className="nav-item">
-                            <Link to={navigation.about} className="nav-link" href='/'>About</Link>
+                            <Link to={navigation.about} className="nav-link" href='/'>ABOUT</Link>
                         </li>
                     </ul>
                 </div>
@@ -86,9 +97,15 @@ function Navbar({username}) {
                             top:"4px"
                         }}
                     >
-                        <Jazzicon diameter={20} seed={jsNumberForAddress(buttonText)} />
+                        <Jazzicon diameter={19} seed={jsNumberForAddress(buttonText)} />
                     </span>
                     {buttonText}
+                    <span className="badge"
+                        style={{
+                            marginLeft:"0.5em",
+                            backgroundColor:"rgb(71,83,232)"
+                        }}
+                    >GOERLI</span>
                 </motion.button>
             </div>
         </nav>
